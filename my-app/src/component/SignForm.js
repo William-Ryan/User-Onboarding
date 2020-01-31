@@ -35,7 +35,7 @@ const SignForm = ({ values, errors, touched, status }) => {
                 </label>
                 <label htmlFor="password">
                     Password
-                    <Field id="password" type="password" name="size" placeholder="password" />
+                    <Field id="password" type="password" name="password" placeholder="password" />
                     {touched.password && errors.password && (
                         <p className="errors">{errors.password}</p>
                     )}
@@ -64,4 +64,33 @@ const SignForm = ({ values, errors, touched, status }) => {
     );
 };
 
-export default SignForm;
+const FormikSignForm = withFormik({
+    
+    mapPropsToValues(props) {
+        return{
+            name: props.name || "",
+            email: props.email || "",
+            password: props.password || "",
+            terms: props.terms || false
+        };
+    },
+
+    validationSchema: Yup.object().shape({
+        name: Yup.string().required("NAME IS REQUIRED"),
+        email: Yup.string().email("EMAIL NOT VALID"),
+    }),
+
+    handleSubmit(values, { setStatus, resetForm }) {
+        axios.post("https://reqres.in/api/users/", values)
+        .then(res => {
+            setStatus(res.data);
+            resetForm();
+        })
+        .catch(err => {
+            console.log("unsuccessful", err);
+        })
+    }
+
+})(SignForm);
+
+export default FormikSignForm;
