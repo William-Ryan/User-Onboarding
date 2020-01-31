@@ -23,7 +23,7 @@ const SignForm = ({ values, errors, touched, status }) => {
                       placeholder="name"
                     />
                     {touched.name && errors.name && (
-                        <p className="errors"> {errors.name}</p>
+                        <p className="errors">{errors.name}</p>
                     )}
                 </label>
                 <label htmlFor="email">
@@ -34,6 +34,7 @@ const SignForm = ({ values, errors, touched, status }) => {
                     )}
                 </label>
                 <label htmlFor="password">
+                    Password
                     <Field id="password" type="password" name="size" placeholder="password" />
                     {touched.password && errors.password && (
                         <p className="errors">{errors.password}</p>
@@ -50,8 +51,17 @@ const SignForm = ({ values, errors, touched, status }) => {
                 </label>
                 <button type="submit">Submit!</button>
             </Form>
+            {signUp.map(sign => {
+                return (
+                    <ul key={sign.id}>
+                        <li>Name: {sign.name}</li>
+                        <li>Email: {sign.email}</li>
+                        <li>Password: {sign.password}</li>
+                    </ul>
+                );
+            })}
         </div>
-    )
-}
+    );
+};
 
 export default SignForm;
